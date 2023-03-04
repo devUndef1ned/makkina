@@ -9,6 +9,8 @@ repositories {
     mavenCentral()
 }
 
+val coroutineVersions = "1.6.4"
+
 kotlin {
     jvm {
         jvmToolchain(11)
@@ -28,7 +30,11 @@ kotlin {
 
     
     sourceSets {
-        val commonMain by getting
+        val commonMain by getting {
+            dependencies {
+                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutineVersions")
+            }
+        }
         val commonTest by getting {
             dependencies {
                 implementation(kotlin("test"))
