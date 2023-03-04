@@ -1,11 +1,11 @@
-package com.devundef1ned
+package com.devundef1ned.makkina
 
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 import kotlin.reflect.KClass
 
-class FiniteStateMachine<STATE : Any, EVENT : Any> internal constructor(
+class Makkina<STATE : Any, EVENT : Any> internal constructor(
     initialState: STATE,
     private val defaultStateHandler: (STATE, EVENT) -> STATE,
     private val stateHandlers: Map<KClass<out STATE>, Map<KClass<out EVENT>, (STATE, EVENT) -> (STATE)>>,

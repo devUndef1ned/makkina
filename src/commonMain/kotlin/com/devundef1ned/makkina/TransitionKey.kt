@@ -1,4 +1,4 @@
-package com.devundef1ned
+package com.devundef1ned.makkina
 
 import kotlin.reflect.KClass
 
