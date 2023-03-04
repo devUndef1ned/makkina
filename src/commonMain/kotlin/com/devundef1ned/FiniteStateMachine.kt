@@ -9,7 +9,8 @@ class FiniteStateMachine<STATE : Any, EVENT : Any> internal constructor(
     initialState: STATE,
     private val defaultStateHandler: (STATE, EVENT) -> STATE,
     private val stateHandlers: Map<KClass<out STATE>, Map<KClass<out EVENT>, (STATE, EVENT) -> (STATE)>>,
-    ) {
+    private val sideEffects: Map<TransitionKey<STATE>, (STATE, STATE) -> Unit>,
+) {
 
     private val mutex = Mutex()
 
@@ -17,23 +18,54 @@ class FiniteStateMachine<STATE : Any, EVENT : Any> internal constructor(
 
     /**
      * Handles event which can cause transition if this state machine has described event handling for this case.
-     * Logic is executed in blocking way.
+     * Side effects are also being run here. Logic is executed in blocking way.
      */
     fun sendEvent(event: EVENT) = runBlocking {
         mutex.withLockIfNot {
             val currentState = state()
+
             val newState = stateHandlers[currentState::class]?.get(event::class)?.let { eventHandler ->
                 eventHandler(_state, event)
             } ?: defaultStateHandler(currentState, event)
+
+            sideEffects.forEach { (key, sideEffect) ->
+                if (key.isApplicable(currentState, newState)) {
+                    sideEffect(currentState, newState)
+                }
+            }
 
             _state = newState
         }
     }
 
     /**
-     * Returns current state of the machine. The invocation can block a thread.
+     * Keeps FSM in the current state by returning its value.
+     */
+    fun stay(): STATE = state()
+
+    /**
+     * Returns the current state of the machine. The invocation can block a thread.
      */
     fun state(): STATE = runBlocking { mutex.withLockIfNot { _state } }
+
+    /**
+     * Forces FSM to go to the [state]. Dangerous method. Consider avoid this method outside the machine.
+     * It can be used to force transition to the [state] as result of some asynchronous computation when current state
+     * isn't important. E.g. you submit a network request as side effect and in the outcome of the request you might
+     * want to make a transition to a new specific state.
+     */
+    fun transitionTo(state: STATE) = runBlocking {
+        mutex.withLockIfNot {
+            val currentState = _state
+            sideEffects.forEach { (key, sideEffect) ->
+                if (key.isApplicable(currentState, state)) {
+                    sideEffect(currentState, state)
+                }
+            }
+
+            _state = state
+        }
+    }
 
     companion object {
         /**
