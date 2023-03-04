@@ -3,10 +3,12 @@ package com.devundef1ned
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
+import kotlin.reflect.KClass
 
 class FiniteStateMachine<STATE : Any, EVENT : Any> internal constructor(
     initialState: STATE,
     private val defaultStateHandler: (STATE, EVENT) -> STATE,
+    private val stateHandlers: Map<KClass<out STATE>, Map<KClass<out EVENT>, (STATE, EVENT) -> (STATE)>>,
     ) {
 
     private val mutex = Mutex()
@@ -20,7 +22,9 @@ class FiniteStateMachine<STATE : Any, EVENT : Any> internal constructor(
     fun sendEvent(event: EVENT) = runBlocking {
         mutex.withLockIfNot {
             val currentState = state()
-            val newState = defaultStateHandler(currentState, event)
+            val newState = stateHandlers[currentState::class]?.get(event::class)?.let { eventHandler ->
+                eventHandler(_state, event)
+            } ?: defaultStateHandler(currentState, event)
 
             _state = newState
         }
