@@ -7,14 +7,17 @@ import com.devundef1ned.makkina.StateFunction
 /**
  * DSL builder for [Makkina].
  */
-class MakkinaBuilder<STATE : Any, EVENT : Any>  {
+class MakkinaBuilder<STATE : Any, EVENT : Any> {
 
     private lateinit var _initialState: STATE
+
     // By default, state handler return the current value.
     private var defaultStateHandler: StateFunction<STATE, EVENT> = { state, _ -> state }
+
     @PublishedApi
     internal val stateHandlerMap: MutableMap<KClass<out STATE>, Map<KClass<out EVENT>, StateFunction<STATE, EVENT>>> =
         mutableMapOf()
+
     @PublishedApi
     internal var sideEffectHandler: SideEffectHandler<STATE> = SideEffectHandler()
 
@@ -35,8 +38,8 @@ class MakkinaBuilder<STATE : Any, EVENT : Any>  {
     }
 
     /**
-    * DSL builder method to describe the [S] state behavior.
-    */
+     * DSL builder method to describe the [S] state behavior.
+     */
     inline fun <reified S : STATE> state(stateHandlerBuilder: StateHandler<STATE, EVENT, S>.() -> Unit) {
         this.stateHandlerMap[S::class] = StateHandler<STATE, EVENT, S>().apply(stateHandlerBuilder).get()
     }
@@ -46,5 +49,16 @@ class MakkinaBuilder<STATE : Any, EVENT : Any>  {
      */
     fun transitions(transitionBuilder: SideEffectHandler<STATE>.() -> Unit) {
         sideEffectHandler = sideEffectHandler.apply(transitionBuilder)
+    }
+
+    internal fun build(): Makkina<STATE, EVENT> {
+        check(this::_initialState.isInitialized) { "Initial state must be initialized!!!" }
+
+        return Makkina(
+            _initialState,
+            defaultStateHandler,
+            stateHandlerMap,
+            sideEffectHandler.sideEffectMap,
+        )
     }
 }

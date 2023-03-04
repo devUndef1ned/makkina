@@ -1,5 +1,6 @@
 package com.devundef1ned.makkina
 
+import com.devundef1ned.makkina.dsl.MakkinaBuilder
 import com.devundef1ned.makkina.dsl.TransitionKey
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.sync.Mutex
@@ -76,6 +77,17 @@ class Makkina<STATE : Any, EVENT : Any> internal constructor(
             lambda()
         } else {
             withLock { lambda() }
+        }
+
+        /**
+         * Entry-point for DSL scheme description.
+         *
+         * @param builder High-level builder lambda that describes the FSM.
+         */
+        operator fun <STATE : Any, EVENT : Any> invoke(
+            builder: MakkinaBuilder<STATE, EVENT>.() -> Unit
+        ): Makkina<STATE, EVENT> {
+            return MakkinaBuilder<STATE, EVENT>().apply(builder).build()
         }
     }
 }
