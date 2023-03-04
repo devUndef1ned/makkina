@@ -47,6 +47,8 @@ internal sealed interface TransitionKey<STATE : Any> {
      * Just any transition.
      */
     class AnyTransition<STATE : Any> : TransitionKey<STATE> {
-        override fun isApplicable(fromState: STATE, toState: STATE): Boolean = true
+        override fun isApplicable(fromState: STATE, toState: STATE): Boolean {
+            return fromState != toState
+        }
     }
 }

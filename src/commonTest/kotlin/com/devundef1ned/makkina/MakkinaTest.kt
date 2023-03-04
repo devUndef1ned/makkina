@@ -126,6 +126,22 @@ class MakkinaTest {
 
         assertEquals(1, someValue)
     }
+
+    @Test
+    fun `Given side effect When stay in the state Should not handle side effects`() {
+        var someValue = 0
+        val makkina = CreateMakkina()
+            .sideEffect {
+                onAny { _, _ ->
+                    someValue = 1
+                }
+            }.create()
+
+        makkina.sendEvent(Event.Clear)
+        makkina.sendEvent(Event.Clear)
+
+        assertEquals(0, someValue)
+    }
 }
 
 private class CreateMakkina {
