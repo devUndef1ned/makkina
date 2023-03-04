@@ -1,5 +1,6 @@
 package com.devundef1ned.makkina
 
+import com.devundef1ned.makkina.dsl.TransitionKey
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
@@ -9,7 +10,7 @@ class Makkina<STATE : Any, EVENT : Any> internal constructor(
     initialState: STATE,
     private val defaultStateHandler: (STATE, EVENT) -> STATE,
     private val stateHandlers: Map<KClass<out STATE>, Map<KClass<out EVENT>, (STATE, EVENT) -> (STATE)>>,
-    private val sideEffects: Map<TransitionKey<STATE>, (STATE, STATE) -> Unit>,
+    private val sideEffects: Map<TransitionKey<STATE>, SideEffect<STATE>>,
 ) {
 
     private val mutex = Mutex()
