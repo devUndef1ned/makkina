@@ -1,5 +1,5 @@
 plugins {
-    kotlin("multiplatform") version "1.8.0"
+    kotlin("multiplatform") version "1.9.23"
 }
 
 group = "org.devundef1ned"
@@ -13,7 +13,7 @@ val coroutineVersions = "1.6.4"
 
 kotlin {
     jvm {
-        jvmToolchain(11)
+        jvmToolchain(21)
         withJava()
         testRuns["test"].executionTask.configure {
             useJUnitPlatform()
