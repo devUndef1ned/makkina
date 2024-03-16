@@ -1,6 +1,6 @@
-package com.devundef1ned.makkina.example
+package io.github.devundef1ned.makkina.example
 
-import com.devundef1ned.makkina.Makkina
+import io.github.devundef1ned.makkina.Makkina
 import java.util.concurrent.Executors
 
 class Door {

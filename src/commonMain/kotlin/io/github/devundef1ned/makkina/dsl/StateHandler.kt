@@ -1,6 +1,6 @@
-package com.devundef1ned.makkina.dsl
+package io.github.devundef1ned.makkina.dsl
 
-import com.devundef1ned.makkina.StateFunction
+import io.github.devundef1ned.makkina.StateFunction
 import kotlin.reflect.KClass
 
 /**

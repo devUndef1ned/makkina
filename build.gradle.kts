@@ -2,7 +2,7 @@ plugins {
     kotlin("multiplatform") version "1.9.23"
 }
 
-group = "org.devundef1ned"
+group = "io.github.devundef1ned"
 version = "0.01-SNAPSHOT"
 
 repositories {
@@ -13,7 +13,7 @@ val coroutineVersions = "1.6.4"
 
 kotlin {
     jvm {
-        jvmToolchain(21)
+        jvmToolchain(19)
         withJava()
         testRuns["test"].executionTask.configure {
             useJUnitPlatform()

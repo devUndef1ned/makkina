@@ -1,6 +1,6 @@
-package com.devundef1ned.makkina
+package io.github.devundef1ned.makkina
 
-import com.devundef1ned.makkina.dsl.SideEffectHandler
+import io.github.devundef1ned.makkina.dsl.SideEffectHandler
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
@@ -168,11 +168,11 @@ private class CreateMakkina {
 }
 
 sealed interface State {
-    object Initial : State
+    data object Initial : State
     data class Data(val data: String) : State
 }
 
 sealed interface Event {
     class PutData(val data: String) : Event
-    object Clear : Event
+    data object Clear : Event
 }

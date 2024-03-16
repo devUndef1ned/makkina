@@ -1,3 +1,1 @@
-
-rootProject.name = "macchina"
-
+rootProject.name = "makkina"

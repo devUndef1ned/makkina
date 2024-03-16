@@ -1,8 +1,8 @@
-package com.devundef1ned.makkina.dsl
+package io.github.devundef1ned.makkina.dsl
 
 import kotlin.reflect.KClass
-import com.devundef1ned.makkina.Makkina
-import com.devundef1ned.makkina.StateFunction
+import io.github.devundef1ned.makkina.Makkina
+import io.github.devundef1ned.makkina.StateFunction
 
 /**
  * DSL builder for [Makkina].

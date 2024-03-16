@@ -1,4 +1,4 @@
-package com.devundef1ned.makkina.example
+package io.github.devundef1ned.makkina.example
 
 import java.util.concurrent.Executors
 

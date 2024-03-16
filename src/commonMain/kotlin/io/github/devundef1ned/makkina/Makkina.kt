@@ -1,7 +1,7 @@
-package com.devundef1ned.makkina
+package io.github.devundef1ned.makkina
 
-import com.devundef1ned.makkina.dsl.MakkinaBuilder
-import com.devundef1ned.makkina.dsl.TransitionKey
+import io.github.devundef1ned.makkina.dsl.MakkinaBuilder
+import io.github.devundef1ned.makkina.dsl.TransitionKey
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock

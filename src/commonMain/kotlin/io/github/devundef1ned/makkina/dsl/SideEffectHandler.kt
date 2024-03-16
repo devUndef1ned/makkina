@@ -1,6 +1,6 @@
-package com.devundef1ned.makkina.dsl
+package io.github.devundef1ned.makkina.dsl
 
-import com.devundef1ned.makkina.SideEffect
+import io.github.devundef1ned.makkina.SideEffect
 
 /**
  * Builder class for Makkina DSL to describe side effects.
