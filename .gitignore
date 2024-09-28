@@ -40,7 +40,7 @@ Pods
 /local.properties
 /gradle.properties
 
-
+.kotlin
 .next
 .cache
 dist
