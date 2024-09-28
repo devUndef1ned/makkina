@@ -16,6 +16,9 @@ val coroutineVersions = "1.6.4"
 
 kotlin {
     jvm()
+    iosArm64()
+    macosArm64()
+    macosX64()
 
     sourceSets {
         val commonMain by getting {
